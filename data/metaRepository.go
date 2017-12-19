@@ -33,6 +33,7 @@ func ListAllImages() []byte {
 		tempImagelist.ID = image.ID
 		tempImagelist.Containers = image.Containers
 		tempImagelist.Size = image.Size
+		tempImagelist.RepoTags = image.RepoTags
 		imageList = append(imageList, tempImagelist)
 	}
 	imageListJSON, err := json.Marshal(imageList)

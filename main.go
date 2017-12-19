@@ -10,12 +10,15 @@ import (
 
 func main() {
 	router := routers.InitRoutes()
-	// server := &http.Server{
-	// 	Addr:    ":4200",
-	// 	Handler: router,
-	// }
+	allowedMethods := []string{"GET", "POST", "PUT", "HEAD"}
+	// Fix this with a specific url later
+	allowedOrigins := []string{"*"}
+	server := &http.Server{
+		Addr:    ":8808",
+		Handler: handlers.CORS(handlers.AllowedMethods(allowedMethods), handlers.AllowedOrigins(allowedOrigins))(router),
+	}
 	log.Println("Listening...")
-	err := http.ListenAndServe(":8808", handlers.CORS(handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD"}), handlers.AllowedOrigins([]string{"*"}))(router))
+	err := server.ListenAndServe()
 	if err != nil {
 		panic(err)
 	}
