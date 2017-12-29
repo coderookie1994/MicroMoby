@@ -8,5 +8,6 @@ import (
 func InitRoutes() *mux.Router {
 	router := mux.NewRouter().StrictSlash(false)
 	router = SetMetaRoutes(router)
+	router = SetContainerRoutes(router)
 	return router
 }
