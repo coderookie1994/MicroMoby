@@ -4,25 +4,15 @@ import (
 	"net/http"
 
 	"github.com/MicroMoby/adapter"
+	"github.com/MicroMoby/common"
 	"github.com/MicroMoby/dockerClient"
 	"github.com/gorilla/mux"
 )
 
 var controller = &Controller{Repository: Repository{}}
 
-// Route :
-type Route struct {
-	Name        string
-	Method      string
-	Pattern     string
-	HandlerFunc http.HandlerFunc
-}
-
-// Routes :
-type Routes []Route
-
-var routes = Routes{
-	Route{
+var routes = common.Routes{
+	common.Route{
 		Name:        "ImageList",
 		Method:      "GET",
 		Pattern:     "/images",
@@ -31,8 +21,7 @@ var routes = Routes{
 }
 
 // NewRouter :
-func NewRouter() *mux.Router {
-	router := mux.NewRouter().StrictSlash(true)
+func NewRouter(router *mux.Router) *mux.Router {
 	for _, route := range routes {
 		var handler http.Handler
 		handler = route.HandlerFunc
