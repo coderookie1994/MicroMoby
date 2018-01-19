@@ -13,7 +13,13 @@ var controller = &Controller{Repository: Repository{}}
 
 var routes = common.Routes{
 	common.Route{
-		Name:        "ImageList",
+		Name:        "ListContainers",
+		Method:      "GET",
+		Pattern:     "/listcontainer",
+		HandlerFunc: controller.ListAllContainers,
+	},
+	common.Route{
+		Name:        "StartContainer",
 		Method:      "POST",
 		Pattern:     "/startcontainer",
 		HandlerFunc: controller.StartContainer,

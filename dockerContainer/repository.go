@@ -29,6 +29,7 @@ func (repo *Repository) StartContainerByID(w http.ResponseWriter, r *http.Reques
 	var containerStartOptions types.ContainerStartOptions
 	containerStartOptions.CheckpointID = startContainerByIDModel.CheckpointID
 	containerStartOptions.CheckpointDir = startContainerByIDModel.CheckpointDir
+	// nil check for containerStartOptions props and send
 	err = client.ContainerStart(context.Background(), startContainerByIDModel.ID, containerStartOptions)
 	if err != nil {
 		log.Println(err)
@@ -36,4 +37,25 @@ func (repo *Repository) StartContainerByID(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	w.Write([]byte("container successfully started"))
+}
+
+// ListContainers :
+func (repo *Repository) ListContainers(w http.ResponseWriter, r *http.Request) {
+	options := types.ContainerListOptions{
+		All: true,
+	}
+	client := gc.Get(r, "dockerClient").(*client.Client)
+	list, err := client.ContainerList(context.Background(), options)
+	if err != nil {
+		log.Panicln([]byte("something went wrong"))
+		w.Write([]byte("unable to get all containers"))
+		return
+	}
+	jsonResponse, err := json.Marshal(list)
+	if err != nil {
+		log.Panicln([]byte("something went wrong"))
+		w.Write([]byte("unable to transform response"))
+		return
+	}
+	w.Write(jsonResponse)
 }
