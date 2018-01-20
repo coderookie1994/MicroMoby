@@ -32,6 +32,8 @@ const (
 	ClientErrorMessage = "something went wrong."
 	// StartContainerSuccessMessage :
 	StartContainerSuccessMessage = "successfully started container"
+	// StopContainerSuccessMessage :
+	StopContainerSuccessMessage = "successfully stopped container"
 	// ListContainerSuccessMessage :
 	ListContainerSuccessMessage = "successfully obtained container list"
 )
