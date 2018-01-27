@@ -24,6 +24,12 @@ var routes = common.Routes{
 		Pattern:     "/startcontainer",
 		HandlerFunc: controller.StartContainer,
 	},
+	common.Route{
+		Name:        "StopContainer",
+		Method:      "POST",
+		Pattern:     "/stopcontainer",
+		HandlerFunc: controller.StopContainer,
+	},
 }
 
 // NewRouter :
