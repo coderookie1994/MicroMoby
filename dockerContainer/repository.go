@@ -114,7 +114,7 @@ func (repo *Repository) ListContainers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	jsonResponse, err := json.Marshal(list)
+	jsonResponse, err := json.Marshal(buildListResponse(list))
 	if err != nil {
 		rm.IsSuccess = false
 		rm.Message = common.ClientErrorMessage
@@ -126,4 +126,30 @@ func (repo *Repository) ListContainers(w http.ResponseWriter, r *http.Request) {
 
 	rm.IsSuccess = true
 	w.Write(jsonResponse)
+}
+
+func buildListResponse(list []types.Container) []ListContainerResponseModel {
+	var listContainerResModel []ListContainerResponseModel
+	for _, eachContainer := range list {
+		var tempListContainerResModel ListContainerResponseModel
+		var ports []port
+		tempListContainerResModel.ID = eachContainer.ID
+		tempListContainerResModel.Names = eachContainer.Names
+		tempListContainerResModel.Image = eachContainer.Image
+		tempListContainerResModel.ImageID = eachContainer.ImageID
+		tempListContainerResModel.Command = eachContainer.Command
+		tempListContainerResModel.State = eachContainer.State
+		tempListContainerResModel.Status = eachContainer.Status
+		for _, eachPort := range eachContainer.Ports {
+			var tempPort port
+			tempPort.IP = eachPort.IP
+			tempPort.PrivatePort = eachPort.PrivatePort
+			tempPort.PublicPort = eachPort.PublicPort
+			tempPort.Type = eachPort.Type
+			ports = append(ports, tempPort)
+		}
+		tempListContainerResModel.Ports = ports
+		listContainerResModel = append(listContainerResModel, tempListContainerResModel)
+	}
+	return listContainerResModel
 }
